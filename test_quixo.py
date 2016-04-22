@@ -6,7 +6,7 @@ for i in range(100):
     game.print_game()
     moves = game.get_moves()
     index = randint(0, len(moves) - 1)
-    game.apply_move(moves[index])
+    game = game.apply_move(moves[index])
     if game.check_for_winner():
         break
 
