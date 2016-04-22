@@ -1,14 +1,15 @@
-from quixo import QuixoGame, QuixoPlayer
+from quixo import QuixoGame
 from random import randint
-game = QuixoGame(num_players=2, grid_size=5)
+game = QuixoGame
+state = QuixoGame.initial_state()
 
 for i in range(100):
-    game.print_game()
-    moves = game.get_moves()
+    game.print_board(state)
+    moves = game.get_moves(state)
     index = randint(0, len(moves) - 1)
-    game = game.apply_move(moves[index])
-    if game.check_for_winner():
+    state = game.apply_move(state, moves[index])
+    if game.get_winner(state):
         break
 
-game.print_game()
-print(game.determine_winner())
+game.print_board(state)
+print(game.get_winner(state))
