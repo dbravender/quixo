@@ -2,6 +2,7 @@ import numpy as np
 from collections import namedtuple
 from copy import deepcopy
 
+from mittmcts import Draw
 
 QuixoMove = namedtuple('QuixoMove', ['space', 'player', 'roll'])
 
@@ -71,7 +72,7 @@ class QuixoGame(object):
                 QuixoMove((bx, by), state.current_player, roll_y(by, 1)),
                 QuixoMove((bx, by), state.current_player, roll_y(by, -1))
             ])
-        return moves
+        return (False, moves)
 
     @staticmethod
     def check_for_winner(board):
@@ -103,11 +104,18 @@ class QuixoGame(object):
         if len(winning_players) > 1:
             return 'Draw'
         else:
-            return winning_players.pop()
+            winner =  winning_players.pop()
+            winner_map = [Draw, 'o', 'x']
+            return winner_map[winner]
     
     @staticmethod
     def get_winner(state):
         return state.winner
+
+    @staticmethod
+    def current_player(state):
+        return state.current_player
+
 
     @staticmethod
     def print_board(state):
