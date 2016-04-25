@@ -2,7 +2,7 @@ from six.moves import input
 
 from mittmcts import MCTS, Draw
 from quixo import QuixoGame
-
+from random import randint
 
 def main():
     state = QuixoGame.initial_state()
@@ -19,13 +19,15 @@ def main():
             break
 
         if state.current_player > 0:
-            result = (MCTS(QuixoGame, state)
-                      .get_simulation_result(1))
+            _, moves = QuixoGame.get_moves(state)
+            index = randint(0, len(moves) - 1)
+            move = moves[index]
+
         else:
             result = (MCTS(QuixoGame, state)
                       .get_simulation_result(100))
-
-        state = QuixoGame.apply_move(state, result.move)
+            move = result.move
+        state = QuixoGame.apply_move(state, move)
 
 if __name__ == '__main__':
     main()
