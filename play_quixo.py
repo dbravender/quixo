@@ -1,13 +1,13 @@
-from six.moves import input
-
 from mittmcts import MCTS, Draw
 from quixo import QuixoGame
 from random import randint
+
 
 def main():
     state = QuixoGame.initial_state()
     number_of_turns = 0
     while True:
+        QuixoGame.print_board(state)
         number_of_turns += 1
         if state.winner:
             QuixoGame.print_board(state)
@@ -25,7 +25,7 @@ def main():
 
         else:
             result = (MCTS(QuixoGame, state)
-                      .get_simulation_result(100))
+                      .get_simulation_result(50))
             move = result.move
         state = QuixoGame.apply_move(state, move)
 

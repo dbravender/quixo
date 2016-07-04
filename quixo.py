@@ -13,15 +13,18 @@ boundary_indexes = np.array([(0, i) for i in range(5)] +
 
 boundary_xs, boundary_ys = boundary_indexes.T
 
+
 def roll_x(position, direction):
     def roll(board):
         board[position] = np.roll(board[position], shift=1)
     return roll
 
+
 def roll_y(position, direction):
     def roll(board):
         board[:, position] = np.roll(board[:, position], shift=1)
     return roll
+
 
 # end unnecessary to compute every time
 class QuixoGame(object):
@@ -34,7 +37,7 @@ class QuixoGame(object):
             board=np.zeros((5, 5), dtype=np.int),
             current_player=1,
             winner=None
-            )
+        )
 
     @classmethod
     def apply_move(cls, state, move):
@@ -43,14 +46,14 @@ class QuixoGame(object):
         move.roll(new_board)
         next_player = state.current_player * -1
 
-        winner = cls.determine_winner(new_board) if cls.check_for_winner(new_board) else None
+        winner = (cls.determine_winner(new_board)
+                  if cls.check_for_winner(new_board) else None)
 
         return cls.State(
             board=new_board,
             current_player=next_player,
             winner=winner
         )
-
 
     @staticmethod
     def get_moves(state):
@@ -88,7 +91,7 @@ class QuixoGame(object):
         win_rows = np.where(np.abs(row_sums) == 5)[0]
         if len(win_rows) > 0:
             winning_players.extend(np.sign(row_sums[win_rows]))
-        
+
         col_sums = np.sum(board, axis=1)
         win_cols = np.where(np.abs(col_sums) == 5)[0]
         if len(win_cols) > 0:
@@ -104,10 +107,10 @@ class QuixoGame(object):
         if len(winning_players) > 1:
             return 'Draw'
         else:
-            winner =  winning_players.pop()
+            winner = winning_players.pop()
             winner_map = [Draw, 'o', 'x']
             return winner_map[winner]
-    
+
     @staticmethod
     def get_winner(state):
         return state.winner
@@ -115,7 +118,6 @@ class QuixoGame(object):
     @staticmethod
     def current_player(state):
         return state.current_player
-
 
     @staticmethod
     def print_board(state):
